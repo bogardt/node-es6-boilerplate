@@ -17,17 +17,29 @@ const controller = {};
  */
 controller.register = async (req, res) => {
   try {
-
     const schema = Joi.object().keys({
-      email: Joi.string().email().lowercase().required(),
-      username: Joi.string().alphanum().min(3).max(30).required(),
-      password: Joi.string().regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/).required(), // password alpha + digit between 6 to 30 chars
-      role: Joi.string().valid('user', 'admin').required()
+      email: Joi.string()
+        .email()
+        .lowercase()
+        .required(),
+      username: Joi.string()
+        .alphanum()
+        .min(3)
+        .max(30)
+        .required(),
+      password: Joi.string()
+        .regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/)
+        .required(), // password alpha + digit between 6 to 30 chars
+      role: Joi.string()
+        .valid('user', 'admin')
+        .required()
     });
-    const result = Joi.validate(req.body, schema, {abortEarly: false});
+    const result = Joi.validate(req.body, schema, { abortEarly: false });
 
     if (result.error !== null) {
-      return res.status(400).send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
+      return res
+        .status(400)
+        .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
     }
 
     const user = await User.findOne({ email: req.body.email });
