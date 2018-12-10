@@ -34,8 +34,8 @@ controller.register = async (req, res) => {
         .valid('user', 'admin')
         .required()
     });
-    const result = Joi.validate(req.body, schema, { abortEarly: false });
 
+    const result = Joi.validate(req.body, schema, { abortEarly: false });
     if (result.error !== null) {
       return res
         .status(400)
