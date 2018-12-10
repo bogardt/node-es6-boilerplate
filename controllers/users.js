@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
+import Joi from 'joi';
 import User from '../models/users';
 import logger from '../modules/winston';
 import config from '../config.dev';
-import { PassportAuthUser, ComparePassword } from '../modules/utils';
+import { PassportAuthUser, ComparePassword, DeleteJoiUselessData } from '../modules/utils';
 
 const bcrypt = require('bcrypt');
 
@@ -16,19 +17,29 @@ const controller = {};
  */
 controller.register = async (req, res) => {
   try {
+
+    const schema = Joi.object().keys({
+      email: Joi.string().email().lowercase().required(),
+      username: Joi.string().alphanum().min(3).max(30).required(),
+      password: Joi.string().regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/).required(), // password alpha + digit between 6 to 30 chars
+      role: Joi.string().valid('user', 'admin').required()
+    });
+    const result = Joi.validate(req.body, schema, {abortEarly: false});
+
+    if (result.error !== null) {
+      return res.status(400).send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
+    }
+
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       return res.status(409).send({ message: 'User already exists' });
     }
 
     const newUser = new User();
-    newUser.username = req.body.username;
-    newUser.name = req.body.name;
     newUser.email = req.body.email;
-    newUser.role = req.body.role;
-    newUser.rooms = [];
-    newUser.friends = [];
+    newUser.username = req.body.username;
     newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    newUser.role = 'user';
     await newUser.save();
 
     return res.status(201).send({ message: 'User successfully created' });

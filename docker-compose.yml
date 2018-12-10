@@ -1,7 +1,7 @@
 version: "2"
 services:
-  srumboardapi:
-    container_name: srumboardapi
+  webapi:
+    container_name: webapi
     restart: always
     build: ./
     depends_on:
@@ -9,7 +9,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - ./:/usr/src/srumboardapi
+      - ./:/usr/src/webapi
     network_mode: host
 
   mongo:
