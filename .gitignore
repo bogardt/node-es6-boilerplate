@@ -1,7 +1,11 @@
 # mongodb
 mongo_data/
 
+# package-lock
+package-lock.json
+
 # Logs
+log/
 logs
 *.log
 npm-debug.log*

@@ -1,0 +1,182 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "NodeJs es6 skeleton api",
+    "description": "NodeJs es6 skeleton api",
+    "version": "1.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "host": "localhost:4000",
+  "basePath": "/api",
+  "paths": {
+    "/api/register": {
+      "post": {
+        "operationId": "Register to api",
+        "summary": "Register to api",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Create user",
+        "parameters": [
+          {
+            "name": "createuser",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Register"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Invalid request"
+          },
+          "201": {
+            "description": "User successfully created"
+          },
+          "409": {
+            "description": "User already exist"
+          },
+          "500": {
+            "description": "Internal error server"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login to website",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Login to our website.",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Invalid request"
+          },
+          "200": {
+            "description": "Successful logged",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "operationId": "me",
+        "summary": "Get personal data",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Get information by bearer token",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "schema": {
+              "$ref": "#/definitions/Me"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Register": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "user@email.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "password": {
+          "type": "string",
+          "default": "qwerty12345"
+        }
+      },
+      "required": [
+        "email",
+        "username",
+        "password"
+      ]
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "password": {
+          "type": "string",
+          "default": "password"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "bearer": {
+          "type": "string",
+          "default": "eyJ0eXAiOiJKV1QiLCUzI1NiJ9.eyJzdWIiOiJUb2tmNhdGVnIjoiV0VCU0VSVklDRSIsImlzcyI6InZlb3M...."
+        }
+      }
+    },
+    "Me": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "role": {
+          "type": "string",
+          "default": "admin",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        }
+      }
+    }
+  }
+}
