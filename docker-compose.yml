@@ -1,0 +1,23 @@
+version: "2"
+services:
+  srumboardapi:
+    container_name: srumboardapi
+    restart: always
+    build: ./
+    depends_on:
+      - "mongo"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/usr/src/srumboardapi
+    network_mode: host
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.0.3
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    network_mode: host
+  
