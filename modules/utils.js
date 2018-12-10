@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 
@@ -27,3 +29,9 @@ export const ComparePassword = async (userPassword, reqPassword) =>
       return resolve(success);
     });
   });
+
+export const DeleteJoiUselessData = errors => {
+  delete errors._object;
+  delete errors.isJoi;
+  return errors;
+};
