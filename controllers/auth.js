@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 const controller = {};
 
 /**
- * Route('/api/users/register')
+ * Route('/api/auth/register')
  * POST
  * @param {*} req
  * @param {*} res
@@ -62,7 +62,7 @@ controller.register = async (req, res) => {
 };
 
 /**
- * Route('/api/users/login')
+ * Route('/api/auth/login')
  * POST
  * @param {*} req
  * @param {*} res
@@ -86,7 +86,7 @@ controller.login = async (req, res) => {
 };
 
 /**
- * Route('/api/users/me')
+ * Route('/api/auth/me')
  * POST
  * @param {*} req
  * @param {*} res
@@ -107,7 +107,7 @@ controller.me = async (req, res) => {
 };
 
 /**
- * Route('/api/user/change_password')
+ * Route('/api/auth/change_password')
  * PATCH
  */
 controller.changePassword = async (req, res) => {
@@ -142,7 +142,7 @@ controller.changePassword = async (req, res) => {
 };
 
 /**
- * Route('/api/users?email={userEmail}')
+ * Route('/api/auth?email={userEmail}')
  * DELETE
  * @param {*} req
  * @param {*} res

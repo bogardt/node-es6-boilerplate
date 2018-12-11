@@ -4,7 +4,7 @@ import passport from 'passport';
 import swaggerTools from 'swagger-tools';
 import cors from 'cors';
 import morgan from 'morgan';
-import users from '../routes/users';
+import auth from '../routes/auth';
 import config from '../config.dev';
 import logger from './logger';
 
@@ -63,7 +63,7 @@ export default app => {
     app.use(express.static(__dirname));
     app.use(passport.initialize());
 
-    app.use('/api/users', users);
+    app.use('/api/auth', auth);
 
     app.get('/', (req, res) => {
       res.send('Invalid endpoint!');

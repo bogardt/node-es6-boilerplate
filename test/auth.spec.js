@@ -7,14 +7,14 @@ const backendUrl = 'localhost:4000';
 chai.should();
 chai.use(chaiHttp);
 chai.request(backendUrl)
-  .delete('/api/users?email=toto@toto.fr')
+  .delete('/api/auth?email=toto@toto.fr')
   .end(() => {});
 
-describe('POST /api/users/register', () => {
+describe('POST /api/auth/register', () => {
   it('Should return 201: user created', done => {
     chai
       .request(backendUrl)
-      .post('/api/users/register')
+      .post('/api/auth/register')
       .send({
         email: 'toto@toto.fr',
         password: 'toto1234',
@@ -29,7 +29,7 @@ describe('POST /api/users/register', () => {
   it('Should return 409: user already exist', done => {
     chai
       .request(backendUrl)
-      .post('/api/users/register')
+      .post('/api/auth/register')
       .send({
         email: 'toto@toto.fr',
         password: 'toto1234',
@@ -45,11 +45,11 @@ describe('POST /api/users/register', () => {
 
 let bearer = '';
 
-describe('POST /api/users/login', () => {
+describe('POST /api/auth/login', () => {
   it('Should return 201: user logged', done => {
     chai
       .request(backendUrl)
-      .post('/api/users/login')
+      .post('/api/auth/login')
       .send({
         email: 'toto@toto.fr',
         password: 'toto1234'
@@ -64,7 +64,7 @@ describe('POST /api/users/login', () => {
   it('Should return 404: wrong email/password', done => {
     chai
       .request(backendUrl)
-      .post('/api/users/login')
+      .post('/api/auth/login')
       .send({
         email: 'toto@toto.fr',
         password: 'toto1234123'
@@ -76,11 +76,11 @@ describe('POST /api/users/login', () => {
   });
 });
 
-describe('GET /api/users/me', () => {
+describe('GET /api/auth/me', () => {
   it('Should return 200: user infos from bearer', done => {
     chai
       .request(backendUrl)
-      .get('/api/users/me')
+      .get('/api/auth/me')
       .set('Authorization', `Bearer ${bearer}`)
       .end((err, res) => {
         res.should.have.status(200);
@@ -90,7 +90,7 @@ describe('GET /api/users/me', () => {
   it('Should return 401: no bearer has been passed in headers', done => {
     chai
       .request(backendUrl)
-      .get('/api/users/me')
+      .get('/api/auth/me')
       .end((err, res) => {
         res.should.have.status(401);
         done();
@@ -98,11 +98,11 @@ describe('GET /api/users/me', () => {
   });
 });
 
-describe('PATCH /api/users/change_password', () => {
+describe('PATCH /api/auth/change_password', () => {
   it('Should return 409: you can\'t use the same password', done => {
     chai
       .request(backendUrl)
-      .patch('/api/users/change_password')
+      .patch('/api/auth/change_password')
       .set('Authorization', `Bearer ${bearer}`)
       .send({
         password: 'toto1234'
@@ -115,7 +115,7 @@ describe('PATCH /api/users/change_password', () => {
   it('Should return 204: change password', done => {
     chai
       .request(backendUrl)
-      .patch('/api/users/change_password')
+      .patch('/api/auth/change_password')
       .set('Authorization', `Bearer ${bearer}`)
       .send({
         password: 'toto12345'
@@ -127,11 +127,11 @@ describe('PATCH /api/users/change_password', () => {
   });
 });
 
-describe('DELETE /api/users?email=toto@toto.fr', () => {
+describe('DELETE /api/auth?email=toto@toto.fr', () => {
   it('Should return 200: user has been deleted', done => {
     chai
       .request(backendUrl)
-      .delete('/api/users?email=toto@toto.fr')
+      .delete('/api/auth?email=toto@toto.fr')
       .end((err, res) => {
         res.should.have.status(200);
         done();
@@ -140,7 +140,7 @@ describe('DELETE /api/users?email=toto@toto.fr', () => {
   it('Should return 404: user doesn\'t exist', done => {
     chai
       .request(backendUrl)
-      .delete('/api/users?email=tutu@tutu.fr')
+      .delete('/api/auth?email=tutu@tutu.fr')
       .end((err, res) => {
         res.should.have.status(404);
         done();
