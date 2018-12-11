@@ -7,10 +7,11 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('/GET me', () => {
-  it('it should get a empty list of todos', done => {
+  it('it should get return 401 because no bearer are set', done => {
     chai
       .request(server)
-      .get('/api/me')
+      .get('/api/users/me')
+      .set('Authorization', 'Bearer ')
       .end((err, res) => {
         res.should.have.status(401);
         done();
