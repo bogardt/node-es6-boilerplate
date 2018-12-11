@@ -1,1 +1,1 @@
-# scrum-board-api
+# nodejs boilerplate
