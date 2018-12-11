@@ -2,7 +2,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-const backendUrl = 'localhost:4200';
+const backendUrl = 'localhost:4000';
 
 chai.should();
 chai.use(chaiHttp);

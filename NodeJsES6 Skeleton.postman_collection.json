@@ -8,82 +8,119 @@
 	},
 	"item": [
 		{
-			"name": "Register",
-			"request": {
-				"url": "http://localhost:4200/api/users/register",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"1232abcd\",\n\t\"role\": \"user\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"event": [
+			"name": "User",
+			"description": "",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"token\", jsonData.bearer);",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:4200/api/users/login",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"password\": \"1232abcd\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Me",
-			"request": {
-				"url": "http://localhost:4200/api/users/me",
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+					"name": "Register",
+					"request": {
+						"url": "http://localhost:4000/api/users/register",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"1232abcd\",\n\t\"role\": \"user\"\n}"
+						},
 						"description": ""
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"test@test.org\",\n\t\"username\": \"toto\",\n\t\"password\": \"toto\"\n}"
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"token\", jsonData.bearer);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:4000/api/users/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"password\": \"1232abcd\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"url": "http://localhost:4000/api/users/me",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test@test.org\",\n\t\"username\": \"toto\",\n\t\"password\": \"toto\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"url": {
+							"raw": "http://localhost:4000/api/users?email=toto@toto.fr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "toto@toto.fr",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
