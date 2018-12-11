@@ -55,6 +55,7 @@ describe('POST /api/users/login', () => {
         password: 'toto1234'
       })
       .end((err, res) => {
+        // eslint-disable-next-line prefer-destructuring
         bearer = JSON.parse(res.text).bearer;
         res.should.have.status(200);
         done();
@@ -97,3 +98,23 @@ describe('GET /api/users/me', () => {
   });
 });
 
+// describe('DELETE /api/users?email=toto@toto.fr', () => {
+//   it('Should return 200: user has been deleted', done => {
+//     chai
+//       .request(backendUrl)
+//       .delete('/api/users?email=toto@toto.fr')
+//       .end((err, res) => {
+//         res.should.have.status(200);
+//         done();
+//       });
+//   });
+//   it('Should return 404: user doesn\'t exist', done => {
+//     chai
+//       .request(backendUrl)
+//       .delete('/api/users?email=tutu@tutu.fr')
+//       .end((err, res) => {
+//         res.should.have.status(404);
+//         done();
+//       });
+//   });
+// });
