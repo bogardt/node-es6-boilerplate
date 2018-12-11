@@ -8,6 +8,8 @@ import auth from '../routes/auth';
 import config from '../config.dev';
 import logger from './logger';
 
+const swaggerDoc = require('../api/swagger.json');
+
 const port = config.serverPort;
 
 logger.stream = {
@@ -24,12 +26,6 @@ export default app => {
     controllers: './controllers',
     useStubs: process.env.NODE_ENV === 'dev' // Conditionally turn on stubs (mock mode)
   };
-
-  /**
-   *  The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
-   */
-  // eslint-disable-next-line global-require
-  const swaggerDoc = require('../api/swagger.json');
 
   /**
    *  Initialize the Swagger middleware
