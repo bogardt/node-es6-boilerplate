@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import User from '../models/users';
-import logger from '../modules/winston';
+import logger from '../modules/logger';
 import config from '../config.dev';
 import { PassportAuthUser, ComparePassword, DeleteJoiUselessData } from '../modules/utils';
 
@@ -34,8 +34,8 @@ controller.register = async (req, res) => {
         .valid('user', 'admin')
         .required()
     });
-    const result = Joi.validate(req.body, schema, { abortEarly: false });
 
+    const result = Joi.validate(req.body, schema, { abortEarly: false });
     if (result.error !== null) {
       return res
         .status(400)
@@ -100,6 +100,26 @@ controller.me = async (req, res) => {
       id: user.id,
       role: user.role
     });
+  } catch (err) {
+    logger.error(`Error in register user- ${err}`);
+    return res.status(500).send({ message: 'Internal error server', errorInfo: err });
+  }
+};
+
+/**
+ * Route('/api/users?email={userEmail}')
+ * DELETE
+ * @param {*} req
+ * @param {*} res
+ */
+controller.deleteUser = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.query.email });
+    if (!user) {
+      return res.status(404).send({ message: 'User doesn\'t exist' });
+    }
+    user = await User.deleteOne({ email: req.query.email });
+    return res.status(200).send({ message: 'User has been deleted' });
   } catch (err) {
     logger.error(`Error in register user- ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });

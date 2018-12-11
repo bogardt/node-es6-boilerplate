@@ -10,7 +10,7 @@
 		{
 			"name": "Register",
 			"request": {
-				"url": "http://localhost:4000/api/users/register",
+				"url": "http://localhost:4200/api/users/register",
 				"method": "POST",
 				"header": [
 					{
@@ -43,7 +43,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:4000/api/users/login",
+				"url": "http://localhost:4200/api/users/login",
 				"method": "POST",
 				"header": [
 					{
@@ -63,7 +63,7 @@
 		{
 			"name": "Me",
 			"request": {
-				"url": "http://localhost:4000/api/users/me",
+				"url": "http://localhost:4200/api/users/me",
 				"method": "GET",
 				"header": [
 					{
