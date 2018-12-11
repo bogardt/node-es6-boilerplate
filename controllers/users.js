@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import User from '../models/users';
-import logger from '../modules/winston';
+import logger from '../modules/logger';
 import config from '../config.dev';
 import { PassportAuthUser, ComparePassword, DeleteJoiUselessData } from '../modules/utils';
 

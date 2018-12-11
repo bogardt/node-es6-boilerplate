@@ -1,23 +1,11 @@
-// Import the dependencies for testing
 import chai from 'chai';
+import mongoose from 'mongoose';
+// import { Mockgoose } from 'mockgoose';
 import chaiHttp from 'chai-http';
-import app from '../server';
+import server from '../server';
+// import config from '../src/config/config';
 
-// Configure chai
-chai.use(chaiHttp);
+// const mockgoose = new Mockgoose(mongoose);
+
 chai.should();
-
-describe('Entity user', () => {
-  describe('Route /api/users/register', () => {
-    it('should get all students record', async done => {
-      chai
-        .request(app)
-        .get('/')
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          done();
-        });
-    });
-  });
-});
+chai.use(chaiHttp);
