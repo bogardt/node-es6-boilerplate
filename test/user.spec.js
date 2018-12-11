@@ -98,6 +98,35 @@ describe('GET /api/users/me', () => {
   });
 });
 
+describe('PATCH /api/users/change_password', () => {
+  it('Should return 409: you can\'t use the same password', done => {
+    chai
+      .request(backendUrl)
+      .patch('/api/users/change_password')
+      .set('Authorization', `Bearer ${bearer}`)
+      .send({
+        password: 'toto1234'
+      })
+      .end((err, res) => {
+        res.should.have.status(409);
+        done();
+      });
+  });
+  it('Should return 204: change password', done => {
+    chai
+      .request(backendUrl)
+      .patch('/api/users/change_password')
+      .set('Authorization', `Bearer ${bearer}`)
+      .send({
+        password: 'toto12345'
+      })
+      .end((err, res) => {
+        res.should.have.status(204);
+        done();
+      });
+  });
+});
+
 describe('DELETE /api/users?email=toto@toto.fr', () => {
   it('Should return 200: user has been deleted', done => {
     chai

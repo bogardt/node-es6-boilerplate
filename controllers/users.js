@@ -107,6 +107,41 @@ controller.me = async (req, res) => {
 };
 
 /**
+ * Route('/api/user/change_password')
+ * PATCH
+ */
+controller.changePassword = async (req, res) => {
+  try {
+    const schema = {
+      password: Joi.string()
+        .regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/)
+        .required() // password alpha + digit between 6 to 30 chars
+    };
+    const result = Joi.validate(req.body, schema, { abortEarly: false });
+    if (result.error !== null) {
+      return res
+        .status(400)
+        .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
+    }
+
+    const user = await PassportAuthUser(req, res);
+    const { password } = req.body;
+    if (password) {
+      const check = await ComparePassword(user.password, password);
+      if (check) {
+        return res.status(409).send({ message: 'You should use a different password' });
+      }
+      user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+      await user.save();
+    }
+    return res.sendStatus(204);
+  } catch (err) {
+    logger.error(`Error in register user- ${err}`);
+    return res.status(500).send({ message: 'Internal error server', errorInfo: err });
+  }
+};
+
+/**
  * Route('/api/users?email={userEmail}')
  * DELETE
  * @param {*} req
