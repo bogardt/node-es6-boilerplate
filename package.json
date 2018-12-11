@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
-    "test": "./node_modules/.bin/mocha --compilers js:babel-register test/user.spec.js",
+    "test": "./node_modules/.bin/mocha --require babel-core/register test/user.spec.js",
     "lint": "./node_modules/eslint/bin/eslint.js controllers/ models/ modules/ routes/"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "joi": "^14.3.0",
     "jsonwebtoken": "^8.3.0",
     "lint": "^1.1.2",
-    "mongoose": "^5.0.17",
+    "mongoose": "^5.2.8",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

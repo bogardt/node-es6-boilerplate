@@ -6,7 +6,11 @@ Mongoose.Promise = global.Promise;
 
 const connectToMongo = async () => {
   try {
-    await Mongoose.connect(`mongodb://${config.dbHost}:${config.dbPort}/${config.dbName}`, { useNewUrlParser: true });
+    await Mongoose.connect(`mongodb://${config.dbHost}:${config.dbPort}/${config.dbName}`,
+      {
+        useCreateIndex: true,
+        useNewUrlParser: true
+      });
     logger.info('MongoDB connect [OK]');
   } catch (err) {
     logger.error('MongoDB connect [NOK]');
