@@ -4,9 +4,10 @@ import passport from 'passport';
 import swaggerTools from 'swagger-tools';
 import cors from 'cors';
 import morgan from 'morgan';
-import auth from '../routes/auth';
 import config from '../config.dev';
 import logger from './logger';
+import auth from '../routes/auth';
+import user from '../routes/user';
 
 const swaggerDoc = require('../api/swagger.json');
 
@@ -60,6 +61,7 @@ export default app => {
     app.use(passport.initialize());
 
     app.use('/api/auth', auth);
+    app.use('/api/user', user);
 
     app.get('/', (req, res) => {
       res.send('Invalid endpoint!');

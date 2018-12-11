@@ -141,24 +141,4 @@ controller.changePassword = async (req, res) => {
   }
 };
 
-/**
- * Route('/api/auth?email={userEmail}')
- * DELETE
- * @param {*} req
- * @param {*} res
- */
-controller.deleteUser = async (req, res) => {
-  try {
-    let user = await User.findOne({ email: req.query.email });
-    if (!user) {
-      return res.status(404).send({ message: 'User doesn\'t exist' });
-    }
-    user = await User.deleteOne({ email: req.query.email });
-    return res.status(200).send({ message: 'User has been deleted' });
-  } catch (err) {
-    logger.error(`Error in register user- ${err}`);
-    return res.status(500).send({ message: 'Internal error server', errorInfo: err });
-  }
-};
-
 export default controller;
