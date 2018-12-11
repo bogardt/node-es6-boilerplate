@@ -106,6 +106,33 @@
           }
         }
       }
+    },
+    "/api/users": {
+      "delete": {
+        "operationId": "/users/delete",
+        "summary": "Delete user by email",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Delete user by email",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email of person who need to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been deleted"
+          },
+          "404": {
+            "description": "User doesn't exist"
+          }
+        }
+      }
     }
   },
   "definitions": {
