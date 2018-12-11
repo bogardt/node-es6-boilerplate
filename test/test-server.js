@@ -1,10 +1,23 @@
-import { expect } from 'chai';
+// Import the dependencies for testing
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../server';
 
-describe('index test', () => {
-  describe('sayHello function', () => {
-    it('should say Hello guys!', () => {
-      const str = 'Hello guys!';
-      expect(str).to.equal('Hello guys!');
+// Configure chai
+chai.use(chaiHttp);
+chai.should();
+
+describe('Entity user', () => {
+  describe('Route /api/users/register', () => {
+    it('should get all students record', async done => {
+      chai
+        .request(app)
+        .get('/')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
     });
   });
 });
