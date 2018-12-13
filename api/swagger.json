@@ -11,7 +11,7 @@
   "host": "localhost:4000",
   "basePath": "/api",
   "paths": {
-    "/api/register": {
+    "/api/auth/register": {
       "post": {
         "operationId": "Register to api",
         "summary": "Register to api",
@@ -44,7 +44,7 @@
         }
       }
     },
-    "/api/login": {
+    "/api/auth/login": {
       "post": {
         "operationId": "login",
         "summary": "Login to website",
@@ -77,7 +77,7 @@
         }
       }
     },
-    "/api/me": {
+    "/api/auth/me": {
       "get": {
         "operationId": "me",
         "summary": "Get personal data",
@@ -107,7 +107,7 @@
         }
       }
     },
-    "/api/users": {
+    "/api/auth": {
       "delete": {
         "operationId": "/users/delete",
         "summary": "Delete user by email",

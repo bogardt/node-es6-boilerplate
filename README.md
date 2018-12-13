@@ -25,10 +25,10 @@ This sample is a quick way to start an api in NodeJS with a mongodb plugged to a
 server.js
 ```
 * `/api` contain the swagger.json with entities definitions
-* `/controllers` contain each file for each entity
-* `/models` contain models json schema serialized for mongodb
+* `/controllers` contain the executed functions for each routes 
+* `/models` contain json schema models object for mongodb
 * `/modules` contain middlewares for this boilerplate
-* `/routes` contain each file for attribute routing for each entity
+* `/routes` contain the association of controllers for routes
 * `/test` contain each test spec file for each entity
 
 ## Installation and run
