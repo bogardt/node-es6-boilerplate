@@ -33,7 +33,7 @@ controller.getUser = async (req, res) => {
       return res.status(404).send({ message: 'User doesn\'t exist' });
     }
 
-    return res.status(200).send({ message: 'OK', user: filterMongoUser(user) });
+    return res.status(200).send(filterMongoUser(user));
   } catch (err) {
     logger.error(`Error in register user- ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
@@ -134,8 +134,8 @@ controller.modifyUser = async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      return res.status(409).send({ message: 'User already exists' });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
     }
 
     user.email = req.body.email;
@@ -144,7 +144,7 @@ controller.modifyUser = async (req, res) => {
     user.role = req.body.role;
     await user.save();
 
-    return res.status(201).send({ message: 'User successfully created' });
+    return res.status(201).send({ message: 'User successfully modified' });
   } catch (err) {
     logger.error(`Error in register user- ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
@@ -192,8 +192,8 @@ controller.updateUser = async (req, res) => {
     } = req.body;
 
     const user = await User.findOne({ email });
-    if (user) {
-      return res.status(409).send({ message: 'User doesn\'t exist' });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
     }
 
     user.username = username !== undefined ? username : user.username;
@@ -203,7 +203,7 @@ controller.updateUser = async (req, res) => {
       : user.password;
     await user.save();
 
-    return res.status(201).send({ message: 'User successfully created' });
+    return res.status(201).send({ message: 'User successfully updated' });
   } catch (err) {
     logger.error(`Error in register user- ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
