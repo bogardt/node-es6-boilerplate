@@ -2,39 +2,53 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-const backendUrl = 'localhost:4000';
-const adminEmail = 'admin@test.org';
-const adminPassword = '1234';
-const userEmail = 'user@test.org';
-const userPassword = '1234';
-const userUnitTestEmail = 'unit_test@test.org';
-const userUnitTestPassword = 'qwerty1234';
-
 chai.should();
 chai.use(chaiHttp);
 
-let userBearer = '';
-let adminBearer = '';
+const data = {
+  url: 'localhost:4000',
+  admin: {
+    email: 'admin@test.org',
+    password: 'qwerty1234',
+    bearer: ''
+  },
+  user: {
+    email: 'user@test.org',
+    password: 'qwerty1234',
+    bearer: ''
+  },
+  notFound: {
+    email: 'not_exist@test.org',
+    password: 'qwerty1234'
+  },
+  post: {
+    user: {
+      email: 'user_post@test.org',
+      password: 'qwerty1234'
+    }
+  }
+};
+
 before((done) => {
   chai
-    .request(backendUrl)
+    .request(data.url)
     .post('/api/auth/login')
     .send({
-      email: userEmail,
-      password: userPassword
+      email: data.user.email,
+      password: data.user.password
     })
     .end((err, res) => {
-      userBearer = JSON.parse(res.text).bearer;
+      data.user.bearer = JSON.parse(res.text).bearer;
       chai
-        .request(backendUrl)
+        .request(data.url)
         .post('/api/auth/login')
         .send({
-          email: adminEmail,
-          password: adminPassword
+          email: data.admin.email,
+          password: data.admin.password
         })
         // eslint-disable-next-line no-shadow
         .end((err, res) => {
-          adminBearer = JSON.parse(res.text).bearer;
+          data.admin.bearer = JSON.parse(res.text).bearer;
           done();
         });
     });
@@ -43,29 +57,29 @@ before((done) => {
 describe('GET /api/user', () => {
   it('Should return 403: forbidden because using a bearer from a classic user', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .get('/api/user?email=user_doesnt_exist@existing_is_nothing.org')
-      .set('Authorization', `Bearer ${userBearer}`)
+      .set('Authorization', `Bearer ${data.user.bearer}`)
       .end((err, res) => {
         res.should.have.status(403);
         done();
       });
   });
-  it('Should return 404: user "user_doesnt_exist@existing_is_nothing.org" doesn\'t exist', done => {
+  it(`Should return 404: user '${data.notFound.email}' doesn't exist`, done => {
     chai
-      .request(backendUrl)
-      .get('/api/user?email=user_doesnt_exist@existing_is_nothing.org')
-      .set('Authorization', `Bearer ${adminBearer}`)
+      .request(data.url)
+      .get(`/api/user?email=${data.notFound.email}`)
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
       .end((err, res) => {
         res.should.have.status(404);
         done();
       });
   });
-  it('Should return 200: user "admin@test.org" should exist', done => {
+  it(`Should return 200: user '${data.admin.email}' should exist`, done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .get('/api/user?email=admin@test.org')
-      .set('Authorization', `Bearer ${adminBearer}`)
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
       .end((err, res) => {
         res.should.have.status(200);
         done();
@@ -74,14 +88,14 @@ describe('GET /api/user', () => {
 });
 
 describe('POST /api/user', () => {
-  it('Should return 403: forbidden because using a bearer from a classic user', done => {
+  it(`Should return 403: forbidden because using a bearer from user : ${data.user.email}`, done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/user')
-      .set('Authorization', `Bearer ${userBearer}`)
+      .set('Authorization', `Bearer ${data.user.bearer}`)
       .send({
-        email: 'unit_test@unit_test.org',
-        password: 'qwerty1234',
+        email: data.user.email,
+        password: data.user.password,
         role: 'admin',
         username: 'unit_test'
       })
@@ -92,12 +106,12 @@ describe('POST /api/user', () => {
   });
   it('Should return 409: user already exist', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/user')
-      .set('Authorization', `Bearer ${adminBearer}`)
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
       .send({
-        email: 'admin@test.org',
-        password: 'qwerty1234',
+        email: data.admin.email,
+        password: data.admin.password,
         role: 'admin',
         username: 'whatever'
       })
@@ -108,12 +122,12 @@ describe('POST /api/user', () => {
   });
   it('Should return 201: user has been created', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/user')
-      .set('Authorization', `Bearer ${adminBearer}`)
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
       .send({
-        email: 'unittest@test.org',
-        password: 'qwerty1234',
+        email: data.post.user.email,
+        password: data.post.user.password,
         role: 'user',
         username: 'unittest'
       })
@@ -124,6 +138,21 @@ describe('POST /api/user', () => {
   });
 });
 
-// describe('PATCH /api/user', () => {
-
-// });
+describe('PUT /api/user', () => {
+  it(`Should return 404: user '${data.notFound.email}' doesn't exist`, done => {
+    chai
+      .request(data.url)
+      .put('/api/user')
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
+      .send({
+        email: data.notFound.email,
+        password: data.notFound.password,
+        role: 'user',
+        username: 'unittest'
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+});

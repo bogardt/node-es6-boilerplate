@@ -11,7 +11,7 @@
     "start": "./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
     "populate": "./node_modules/.bin/babel-node ./scripts/populate.user.js",
     "unpopulate": "./node_modules/.bin/babel-node ./scripts/unpopulate.user.js",
-    "pre-test": "./node_modules/.bin/mocha --require babel-core/register test/*.spec.js",
+    "pre-test": "./node_modules/.bin/mocha --require babel-core/register test/user.spec.js",
     "lint": "./node_modules/eslint/bin/eslint.js controllers/ models/ modules/ routes/ test/",
     "test": "npm run populate && npm run pre-test"
   },

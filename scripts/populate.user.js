@@ -8,13 +8,13 @@ const users = [
   {
     email: 'admin@test.org',
     username: 'admin_test',
-    password: bcrypt.hashSync('1234', bcrypt.genSaltSync(10)),
+    password: bcrypt.hashSync('qwerty1234', bcrypt.genSaltSync(10)),
     role: 'admin'
   },
   {
     email: 'user@test.org',
     username: 'user_test',
-    password: bcrypt.hashSync('1234', bcrypt.genSaltSync(10)),
+    password: bcrypt.hashSync('qwerty1234', bcrypt.genSaltSync(10)),
     role: 'user'
   }
 ];
