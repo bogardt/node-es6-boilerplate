@@ -112,6 +112,8 @@ controller.me = async (req, res) => {
  */
 controller.changePassword = async (req, res) => {
   try {
+    const user = await PassportAuthUser(req, res);
+
     const schema = {
       password: Joi.string()
         .regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/)
@@ -124,7 +126,6 @@ controller.changePassword = async (req, res) => {
         .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
     }
 
-    const user = await PassportAuthUser(req, res);
     const { password } = req.body;
     if (password) {
       const check = await ComparePassword(user.password, password);
