@@ -4,8 +4,6 @@ const bcrypt = require('bcrypt');
 
 require('../models/users');
 
-Mongoose.Promise = global.Promise;
-
 const users = [
   {
     email: 'admin@test.org',

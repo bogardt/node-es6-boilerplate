@@ -60,6 +60,11 @@ Populate db with default classic and admin user :
 npm run populate
 ```
 
+To remove all entities from user table :
+```bash
+npm run unpopulate
+```
+
 ## Infos
 
 A postman collection with each entities is available on this repository as `NodeJsES6 Skeleton.portman_collection.json`.
