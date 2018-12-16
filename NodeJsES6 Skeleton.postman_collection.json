@@ -8,13 +8,168 @@
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "User (only admin)",
+			"description": "",
+			"item": [
+				{
+					"name": "Get user",
+					"request": {
+						"url": {
+							"raw": "http://localhost:4000/api/user?email=toto@toto.fr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "toto@toto.fr",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"url": "http://localhost:4000/api/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"1232abcd\",\n\t\"role\": \"user\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Patch user",
+					"request": {
+						"url": "http://localhost:4000/api/user",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"role\": \"admin\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Put user",
+					"request": {
+						"url": "http://localhost:4000/api/user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"qwerty1234\",\n\t\"role\": \"user\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"url": {
+							"raw": "http://localhost:4000/api/user?email=user@test.org",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user@test.org",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
 			"description": "",
 			"item": [
 				{
 					"name": "Register",
 					"request": {
-						"url": "http://localhost:4000/api/users/register",
+						"url": "http://localhost:4000/api/auth/register",
 						"method": "POST",
 						"header": [
 							{
@@ -32,7 +187,7 @@
 					"response": []
 				},
 				{
-					"name": "Login",
+					"name": "Login user",
 					"event": [
 						{
 							"listen": "test",
@@ -47,7 +202,7 @@
 						}
 					],
 					"request": {
-						"url": "http://localhost:4000/api/users/login",
+						"url": "http://localhost:4000/api/auth/login",
 						"method": "POST",
 						"header": [
 							{
@@ -58,7 +213,65 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"password\": \"1232abcd\"\n}"
+							"raw": "{\n\t\"email\": \"user@test.org\",\n\t\"password\": \"1234\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"token\", jsonData.bearer);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:4000/api/auth/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@test.org\",\n\t\"password\": \"1234\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"url": "http://localhost:4000/api/auth/change_password",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"1232abcde\"\n}"
 						},
 						"description": ""
 					},
@@ -67,7 +280,7 @@
 				{
 					"name": "Me",
 					"request": {
-						"url": "http://localhost:4000/api/users/me",
+						"url": "http://localhost:4000/api/auth/me",
 						"method": "GET",
 						"header": [
 							{
@@ -85,37 +298,6 @@
 							"mode": "raw",
 							"raw": "{\n\t\"email\": \"test@test.org\",\n\t\"username\": \"toto\",\n\t\"password\": \"toto\"\n}"
 						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Delete user",
-					"request": {
-						"url": {
-							"raw": "http://localhost:4000/api/users?email=toto@toto.fr",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"api",
-								"users"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "toto@toto.fr",
-									"equals": true,
-									"description": ""
-								}
-							],
-							"variable": []
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {},
 						"description": ""
 					},
 					"response": []

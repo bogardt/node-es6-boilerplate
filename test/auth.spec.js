@@ -6,9 +6,6 @@ const backendUrl = 'localhost:4000';
 
 chai.should();
 chai.use(chaiHttp);
-chai.request(backendUrl)
-  .delete('/api/auth?email=toto@toto.fr')
-  .end(() => {});
 
 describe('POST /api/auth/register', () => {
   it('Should return 201: user created', done => {
@@ -122,27 +119,6 @@ describe('PATCH /api/auth/change_password', () => {
       })
       .end((err, res) => {
         res.should.have.status(204);
-        done();
-      });
-  });
-});
-
-describe('DELETE /api/auth?email=toto@toto.fr', () => {
-  it('Should return 200: user has been deleted', done => {
-    chai
-      .request(backendUrl)
-      .delete('/api/auth?email=toto@toto.fr')
-      .end((err, res) => {
-        res.should.have.status(200);
-        done();
-      });
-  });
-  it('Should return 404: user doesn\'t exist', done => {
-    chai
-      .request(backendUrl)
-      .delete('/api/auth?email=tutu@tutu.fr')
-      .end((err, res) => {
-        res.should.have.status(404);
         done();
       });
   });

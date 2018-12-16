@@ -4,9 +4,12 @@ import passport from 'passport';
 import swaggerTools from 'swagger-tools';
 import cors from 'cors';
 import morgan from 'morgan';
-import auth from '../routes/auth';
 import config from '../config.dev';
 import logger from './logger';
+import auth from '../routes/auth';
+import user from '../routes/user';
+
+const swaggerDoc = require('../api/swagger.json');
 
 const port = config.serverPort;
 
@@ -24,12 +27,6 @@ export default app => {
     controllers: './controllers',
     useStubs: process.env.NODE_ENV === 'dev' // Conditionally turn on stubs (mock mode)
   };
-
-  /**
-   *  The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
-   */
-  // eslint-disable-next-line global-require
-  const swaggerDoc = require('../api/swagger.json');
 
   /**
    *  Initialize the Swagger middleware
@@ -64,6 +61,7 @@ export default app => {
     app.use(passport.initialize());
 
     app.use('/api/auth', auth);
+    app.use('/api/user', user);
 
     app.get('/', (req, res) => {
       res.send('Invalid endpoint!');

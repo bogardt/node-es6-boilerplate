@@ -107,15 +107,174 @@
         }
       }
     },
-    "/api/auth": {
+    "/api/user": {
+      "get": {
+        "operationId": "Get user",
+        "summary": "Get user by email",
+        "tags": [
+          "User"
+        ],
+        "description": "Get user infos by email as uid",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email of person who need to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "schema": {
+              "$ref": "#/definitions/GetUser"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "post": {
+        "operationId": "Post user",
+        "summary": "Create new user",
+        "tags": [
+          "User"
+        ],
+        "description": "Create new user",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "create user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "409": {
+            "description": "User already exist"
+          }
+        }
+      },
+      "put": {
+        "operationId": "Put user",
+        "summary": "Modify existing user",
+        "tags": [
+          "User"
+        ],
+        "description": "Modify existing user",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "modify user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PutUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User doesn't exist"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Patch user",
+        "summary": "Update some user field(s)",
+        "tags": [
+          "User"
+        ],
+        "description": "Update some user field(s)",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "update user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PatchUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User doesn't exist"
+          }
+        }
+      },
       "delete": {
-        "operationId": "/users/delete",
+        "operationId": "Delete user",
         "summary": "Delete user by email",
         "tags": [
-          "Auth"
+          "User"
         ],
         "description": "Delete user by email",
         "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "email",
             "in": "query",
@@ -127,6 +286,12 @@
         "responses": {
           "200": {
             "description": "User has been deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "User doesn't exist"
@@ -194,6 +359,118 @@
         "username": {
           "type": "string",
           "default": "username"
+        },
+        "role": {
+          "type": "string",
+          "default": "admin",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        }
+      }
+    },
+    "GetUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "default": "5c16da4a944f2e561950022d"
+        },
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "role": {
+          "type": "string",
+          "default": "admin",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        }
+      }
+    },
+    "CreateUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "password": {
+          "type": "string",
+          "default": "password"
+        },
+        "role": {
+          "type": "string",
+          "default": "admin",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "username",
+        "password",
+        "role"
+      ]
+    },
+    "PutUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "password": {
+          "type": "string",
+          "default": "password"
+        },
+        "role": {
+          "type": "string",
+          "default": "admin",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "username",
+        "password",
+        "role"
+      ]
+    },
+    "PatchUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "test@test.org"
+        },
+        "username": {
+          "type": "string",
+          "default": "username"
+        },
+        "password": {
+          "type": "string",
+          "default": "password"
         },
         "role": {
           "type": "string",

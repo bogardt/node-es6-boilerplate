@@ -52,11 +52,12 @@ controller.register = async (req, res) => {
     newUser.username = req.body.username;
     newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     newUser.role = 'user';
+
     await newUser.save();
 
     return res.status(201).send({ message: 'User successfully created' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/register - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -73,14 +74,16 @@ controller.login = async (req, res) => {
     if (!user) {
       return res.status(404).send({ message: 'Wrong username or wrong password' });
     }
+
     const check = await ComparePassword(user.password, req.body.password);
     if (check) {
       const token = jwt.sign({ email: user.email }, config.secretJWT);
       return res.status(200).send({ bearer: token });
     }
+
     return res.status(404).send({ message: 'Wrong username or wrong password' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/login - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -94,6 +97,7 @@ controller.login = async (req, res) => {
 controller.me = async (req, res) => {
   try {
     const user = await PassportAuthUser(req, res);
+
     return res.status(200).send({
       username: user.username,
       email: user.email,
@@ -101,7 +105,7 @@ controller.me = async (req, res) => {
       role: user.role
     });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/me - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -112,6 +116,8 @@ controller.me = async (req, res) => {
  */
 controller.changePassword = async (req, res) => {
   try {
+    const user = await PassportAuthUser(req, res);
+
     const schema = {
       password: Joi.string()
         .regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/)
@@ -124,39 +130,21 @@ controller.changePassword = async (req, res) => {
         .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
     }
 
-    const user = await PassportAuthUser(req, res);
     const { password } = req.body;
     if (password) {
       const check = await ComparePassword(user.password, password);
       if (check) {
         return res.status(409).send({ message: 'You should use a different password' });
       }
+
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+
       await user.save();
     }
+
     return res.sendStatus(204);
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
-    return res.status(500).send({ message: 'Internal error server', errorInfo: err });
-  }
-};
-
-/**
- * Route('/api/auth?email={userEmail}')
- * DELETE
- * @param {*} req
- * @param {*} res
- */
-controller.deleteUser = async (req, res) => {
-  try {
-    let user = await User.findOne({ email: req.query.email });
-    if (!user) {
-      return res.status(404).send({ message: 'User doesn\'t exist' });
-    }
-    user = await User.deleteOne({ email: req.query.email });
-    return res.status(200).send({ message: 'User has been deleted' });
-  } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/change_password - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
