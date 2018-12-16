@@ -6,9 +6,6 @@ const backendUrl = 'localhost:4000';
 
 chai.should();
 chai.use(chaiHttp);
-chai.request(backendUrl)
-  .delete('/api/auth?email=toto@toto.fr')
-  .end(() => {});
 
 describe('POST /api/auth/register', () => {
   it('Should return 201: user created', done => {
