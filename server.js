@@ -1,7 +1,7 @@
 import express from 'express';
 import config from './config.dev';
-import connectToMongo from './modules/mongo';
 import expressConfig from './modules/express';
+import { connectToMongo } from './modules/mongo';
 
 require('./modules/passport');
 

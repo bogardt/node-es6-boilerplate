@@ -1,7 +1,10 @@
-const mongoose = require('mongoose');
+import Mongoose, { connectToMongo, disconnectFromMongo } from '../modules/mongo';
+
 const bcrypt = require('bcrypt');
 
 require('../models/users');
+
+Mongoose.Promise = global.Promise;
 
 const users = [
   {
@@ -18,17 +21,10 @@ const users = [
   }
 ];
 
-mongoose.connect('mongodb://localhost:27017/data', {
-  useCreateIndex: true,
-  useNewUrlParser: true
-}, (mongoErr) => {
-  if (mongoErr) {
-    throw mongoErr;
-  }
+connectToMongo();
 
-  const Users = mongoose.model('User');
-  Users.collection.drop();
-
+const Users = Mongoose.model('User');
+Users.collection.drop(() => {
   users.forEach((user, index) => {
     const person = Users(user);
     person.save(saveErr => {
@@ -37,7 +33,7 @@ mongoose.connect('mongodb://localhost:27017/data', {
       }
       console.log(`User ${user.email} created !`);
       if (index === (users.length - 1)) {
-        mongoose.disconnect();
+        disconnectFromMongo();
       }
     });
   });

@@ -4,7 +4,7 @@ import config from '../config.dev';
 
 Mongoose.Promise = global.Promise;
 
-const connectToMongo = async () => {
+export const connectToMongo = async () => {
   try {
     await Mongoose.connect(`mongodb://${config.dbHost}:${config.dbPort}/${config.dbName}`,
       {
@@ -17,4 +17,13 @@ const connectToMongo = async () => {
   }
 };
 
-export default connectToMongo;
+export const disconnectFromMongo = async () => {
+  try {
+    await Mongoose.disconnect();
+    logger.info('MongoDB disconnect [OK]');
+  } catch (err) {
+    logger.error('MongoDB disconnect [NOK]');
+  }
+};
+
+export default Mongoose;
