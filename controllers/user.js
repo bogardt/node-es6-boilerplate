@@ -88,6 +88,7 @@ controller.createUser = async (req, res) => {
     newUser.username = req.body.username;
     newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     newUser.role = req.body.role;
+
     await newUser.save();
 
     return res.status(201).send({ message: 'User successfully created' });
@@ -142,9 +143,10 @@ controller.modifyUser = async (req, res) => {
     user.username = req.body.username;
     user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     user.role = req.body.role;
+
     await user.save();
 
-    return res.status(201).send({ message: 'User successfully modified' });
+    return res.sendStatus(204);
   } catch (err) {
     logger.error(`Error in PUT /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
@@ -201,9 +203,10 @@ controller.updateUser = async (req, res) => {
     user.password = password !== undefined
       ? bcrypt.hashSync(password, bcrypt.genSaltSync(10))
       : user.password;
+
     await user.save();
 
-    return res.status(201).send({ message: 'User successfully updated' });
+    return res.sendStatus(204);
   } catch (err) {
     logger.error(`Error in PATCH /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
@@ -222,13 +225,16 @@ controller.deleteUser = async (req, res) => {
     if (userReq.role !== 'admin') {
       return res.status(403).send({ message: 'Forbidden' });
     }
+
     const { email } = req.query;
 
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).send({ message: 'User doesn\'t exist' });
     }
+
     await User.deleteOne({ email });
+
     return res.status(200).send({ message: 'User has been deleted' });
   } catch (err) {
     logger.error(`Error in DELETE /api/user - ${err}`);

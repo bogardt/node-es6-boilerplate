@@ -21,9 +21,9 @@ const data = {
     email: 'not_exist@test.org',
     password: 'qwerty1234'
   },
-  post: {
+  lambda: {
     user: {
-      email: 'user_post@test.org',
+      email: 'lambda@test.org',
       password: 'qwerty1234'
     }
   }
@@ -97,7 +97,7 @@ describe('POST /api/user', () => {
         email: data.user.email,
         password: data.user.password,
         role: 'admin',
-        username: 'unit_test'
+        username: 'whatever'
       })
       .end((err, res) => {
         res.should.have.status(403);
@@ -126,10 +126,10 @@ describe('POST /api/user', () => {
       .post('/api/user')
       .set('Authorization', `Bearer ${data.admin.bearer}`)
       .send({
-        email: data.post.user.email,
-        password: data.post.user.password,
+        email: data.lambda.user.email,
+        password: data.lambda.user.password,
         role: 'user',
-        username: 'unittest'
+        username: 'whatever'
       })
       .end((err, res) => {
         res.should.have.status(201);
@@ -148,10 +148,57 @@ describe('PUT /api/user', () => {
         email: data.notFound.email,
         password: data.notFound.password,
         role: 'user',
-        username: 'unittest'
+        username: 'titi'
       })
       .end((err, res) => {
         res.should.have.status(404);
+        done();
+      });
+  });
+  it(`Should return 204: user '${data.lambda.user.email}' has been modified`, done => {
+    chai
+      .request(data.url)
+      .put('/api/user')
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
+      .send({
+        email: data.lambda.user.email,
+        password: data.lambda.user.password,
+        role: 'user',
+        username: 'titi'
+      })
+      .end((err, res) => {
+        res.should.have.status(204);
+        done();
+      });
+  });
+});
+
+describe('PATCH /api/user', () => {
+  it(`Should return 404: user '${data.notFound.email}' doesn't exist`, done => {
+    chai
+      .request(data.url)
+      .patch('/api/user')
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
+      .send({
+        email: data.notFound.email,
+        username: 'tutu'
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+  it(`Should return 204: user '${data.lambda.user.email}' has been modified`, done => {
+    chai
+      .request(data.url)
+      .patch('/api/user')
+      .set('Authorization', `Bearer ${data.admin.bearer}`)
+      .send({
+        email: data.lambda.user.email,
+        username: 'tutu'
+      })
+      .end((err, res) => {
+        res.should.have.status(204);
         done();
       });
   });

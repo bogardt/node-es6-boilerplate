@@ -52,6 +52,7 @@ controller.register = async (req, res) => {
     newUser.username = req.body.username;
     newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     newUser.role = 'user';
+
     await newUser.save();
 
     return res.status(201).send({ message: 'User successfully created' });
@@ -73,11 +74,13 @@ controller.login = async (req, res) => {
     if (!user) {
       return res.status(404).send({ message: 'Wrong username or wrong password' });
     }
+
     const check = await ComparePassword(user.password, req.body.password);
     if (check) {
       const token = jwt.sign({ email: user.email }, config.secretJWT);
       return res.status(200).send({ bearer: token });
     }
+
     return res.status(404).send({ message: 'Wrong username or wrong password' });
   } catch (err) {
     logger.error(`Error in /api/auth/login - ${err}`);
@@ -94,6 +97,7 @@ controller.login = async (req, res) => {
 controller.me = async (req, res) => {
   try {
     const user = await PassportAuthUser(req, res);
+
     return res.status(200).send({
       username: user.username,
       email: user.email,
@@ -132,9 +136,12 @@ controller.changePassword = async (req, res) => {
       if (check) {
         return res.status(409).send({ message: 'You should use a different password' });
       }
+
       user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+
       await user.save();
     }
+
     return res.sendStatus(204);
   } catch (err) {
     logger.error(`Error in /api/auth/change_password - ${err}`);
