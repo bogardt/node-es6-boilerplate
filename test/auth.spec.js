@@ -126,24 +126,3 @@ describe('PATCH /api/auth/change_password', () => {
       });
   });
 });
-
-describe('DELETE /api/auth?email=toto@toto.fr', () => {
-  it('Should return 200: user has been deleted', done => {
-    chai
-      .request(backendUrl)
-      .delete('/api/auth?email=toto@toto.fr')
-      .end((err, res) => {
-        res.should.have.status(200);
-        done();
-      });
-  });
-  it('Should return 404: user doesn\'t exist', done => {
-    chai
-      .request(backendUrl)
-      .delete('/api/auth?email=tutu@tutu.fr')
-      .end((err, res) => {
-        res.should.have.status(404);
-        done();
-      });
-  });
-});

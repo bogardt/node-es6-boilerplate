@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js --exec babel-node server.js",
+    "populate": "./node_modules/.bin/babel-node ./scripts/populate.user.js",
     "test": "./node_modules/.bin/mocha --require babel-core/register test/auth.spec.js",
     "lint": "./node_modules/eslint/bin/eslint.js controllers/ models/ modules/ routes/ test/"
   },

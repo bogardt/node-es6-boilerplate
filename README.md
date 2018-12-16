@@ -55,6 +55,11 @@ To run the test :
 npm test
 ```
 
+Populate db with default classic and admin user :
+```bash
+npm run populate
+```
+
 ## Infos
 
 A postman collection with each entities is available on this repository as `NodeJsES6 Skeleton.portman_collection.json`.
