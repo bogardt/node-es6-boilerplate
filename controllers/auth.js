@@ -56,7 +56,7 @@ controller.register = async (req, res) => {
 
     return res.status(201).send({ message: 'User successfully created' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/register - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -80,7 +80,7 @@ controller.login = async (req, res) => {
     }
     return res.status(404).send({ message: 'Wrong username or wrong password' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/login - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -101,7 +101,7 @@ controller.me = async (req, res) => {
       role: user.role
     });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/me - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -137,7 +137,7 @@ controller.changePassword = async (req, res) => {
     }
     return res.sendStatus(204);
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in /api/auth/change_password - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };

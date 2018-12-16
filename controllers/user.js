@@ -35,7 +35,7 @@ controller.getUser = async (req, res) => {
 
     return res.status(200).send(filterMongoUser(user));
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in GET /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -92,7 +92,7 @@ controller.createUser = async (req, res) => {
 
     return res.status(201).send({ message: 'User successfully created' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in POST /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -146,7 +146,7 @@ controller.modifyUser = async (req, res) => {
 
     return res.status(201).send({ message: 'User successfully modified' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in PUT /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -205,7 +205,7 @@ controller.updateUser = async (req, res) => {
 
     return res.status(201).send({ message: 'User successfully updated' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in PATCH /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
@@ -231,7 +231,7 @@ controller.deleteUser = async (req, res) => {
     await User.deleteOne({ email });
     return res.status(200).send({ message: 'User has been deleted' });
   } catch (err) {
-    logger.error(`Error in register user- ${err}`);
+    logger.error(`Error in DELETE /api/user - ${err}`);
     return res.status(500).send({ message: 'Internal error server', errorInfo: err });
   }
 };
