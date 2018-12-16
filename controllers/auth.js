@@ -29,10 +29,7 @@ controller.register = async (req, res) => {
         .required(),
       password: Joi.string()
         .regex(/^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/)
-        .required(), // password alpha + digit between 6 to 30 chars
-      role: Joi.string()
-        .valid('user', 'admin')
-        .required()
+        .required() // password alpha + digit between 6 to 30 chars
     });
 
     const result = Joi.validate(req.body, schema, { abortEarly: false });

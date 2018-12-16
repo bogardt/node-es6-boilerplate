@@ -2,22 +2,25 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-const backendUrl = 'localhost:4000';
-
 chai.should();
 chai.use(chaiHttp);
+
+const data = {
+  url: 'localhost:4000',
+  user: {
+    email: 'toto@auth.fr',
+    password: 'qwerty1234',
+    username: 'toto'
+  },
+  bearer: ''
+};
 
 describe('POST /api/auth/register', () => {
   it('Should return 201: user created', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/auth/register')
-      .send({
-        email: 'toto@toto.fr',
-        password: 'toto1234',
-        username: 'toto',
-        role: 'user'
-      })
+      .send(data.user)
       .end((err, res) => {
         res.should.have.status(201);
         done();
@@ -25,14 +28,9 @@ describe('POST /api/auth/register', () => {
   });
   it('Should return 409: user already exist', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/auth/register')
-      .send({
-        email: 'toto@toto.fr',
-        password: 'toto1234',
-        username: 'toto',
-        role: 'user'
-      })
+      .send(data.user)
       .end((err, res) => {
         res.should.have.status(409);
         done();
@@ -40,31 +38,28 @@ describe('POST /api/auth/register', () => {
   });
 });
 
-let bearer = '';
-
 describe('POST /api/auth/login', () => {
   it('Should return 201: user logged', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/auth/login')
       .send({
-        email: 'toto@toto.fr',
-        password: 'toto1234'
+        email: data.user.email,
+        password: data.user.password
       })
       .end((err, res) => {
-        // eslint-disable-next-line prefer-destructuring
-        bearer = JSON.parse(res.text).bearer;
+        data.bearer = JSON.parse(res.text).bearer;
         res.should.have.status(200);
         done();
       });
   });
   it('Should return 404: wrong email/password', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .post('/api/auth/login')
       .send({
-        email: 'toto@toto.fr',
-        password: 'toto1234123'
+        email: data.user.email,
+        password: 'bad_password'
       })
       .end((err, res) => {
         res.should.have.status(404);
@@ -76,9 +71,9 @@ describe('POST /api/auth/login', () => {
 describe('GET /api/auth/me', () => {
   it('Should return 200: user infos from bearer', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .get('/api/auth/me')
-      .set('Authorization', `Bearer ${bearer}`)
+      .set('Authorization', `Bearer ${data.bearer}`)
       .end((err, res) => {
         res.should.have.status(200);
         done();
@@ -86,7 +81,7 @@ describe('GET /api/auth/me', () => {
   });
   it('Should return 401: no bearer has been passed in headers', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .get('/api/auth/me')
       .end((err, res) => {
         res.should.have.status(401);
@@ -98,11 +93,11 @@ describe('GET /api/auth/me', () => {
 describe('PATCH /api/auth/change_password', () => {
   it('Should return 409: you can\'t use the same password', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .patch('/api/auth/change_password')
-      .set('Authorization', `Bearer ${bearer}`)
+      .set('Authorization', `Bearer ${data.bearer}`)
       .send({
-        password: 'toto1234'
+        password: data.user.password
       })
       .end((err, res) => {
         res.should.have.status(409);
@@ -111,11 +106,11 @@ describe('PATCH /api/auth/change_password', () => {
   });
   it('Should return 204: change password', done => {
     chai
-      .request(backendUrl)
+      .request(data.url)
       .patch('/api/auth/change_password')
-      .set('Authorization', `Bearer ${bearer}`)
+      .set('Authorization', `Bearer ${data.bearer}`)
       .send({
-        password: 'toto12345'
+        password: 'newpassword1234'
       })
       .end((err, res) => {
         res.should.have.status(204);
