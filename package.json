@@ -41,7 +41,6 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "prettier": "^1.14.3",
     "swagger-tools": "^0.10.4",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6"
@@ -56,6 +55,7 @@
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.8"
+    "nodemon": "^1.18.8",
+    "prettier": "^1.14.3"
   }
 }
