@@ -5,11 +5,10 @@ This sample is a quick way to start an api in NodeJS with a mongodb plugged to a
 
 
 ## Table of Contents
-
-- [NodeJS boilerplate](#nodejs-boilerplate)
   - [Table of Contents](#table-of-contents)
   - [Project architecture](#project-architecture)
-  - [Installation and run](#installation-and-run)
+  - [Docker / docker-compose version](#docker--docker-compose-version)
+  - [Getting Started](#getting-started)
   - [Scripts](#scripts)
   - [Infos](#infos)
 
@@ -21,52 +20,51 @@ This sample is a quick way to start an api in NodeJS with a mongodb plugged to a
 /models
 /modules
 /routes
-/test
+/test/*.spec.js
 server.js
 ```
-* `/api` contain the swagger.json with entities definitions
-* `/controllers` contain the executed functions for each routes 
-* `/models` contain json schema models object for mongodb
-* `/modules` contain middlewares for this boilerplate
-* `/routes` contain the association of controllers for routes
-* `/test` contain each test spec file for each entity
+* `/api` OpenAPI spec
+* `/controllers` Routes implementation
+* `/models` MongoDb models
+* `/modules` Lib
+* `/routes` Routes declaration
+* `/test` Unit test with chai/mocha 
 
-## Installation and run
-
-1) Needs
+## Docker / docker-compose version
 
 - Docker version 18.06.1-ce, build e68fc7a
 - docker-compose version 1.21.0, build 5920eb0
 
-2) To build nodejs / mongodb images :
-```bash
-docker-compose build --no-cache
-```
 
-3) Start the stack :
+## Getting Started
+
 ```bash
-docker-compose up
+# Clone it
+git clone git@github.com:bogardt/node-es6-boilerplate.git
+cd node-es6-boilerplate
+
+# Build images
+docker-compose build --no-cache
+
+# Run
+docker-compose up -d
 ```
 
 ## Scripts
 
-To run the test :
 ```bash
+# Run test
 npm test
-```
 
-Populate db with default classic and admin user :
-```bash
+# Populate db
 npm run populate
-```
 
-To remove all entities from user table :
-```bash
+# Drop 'User' table
 npm run unpopulate
 ```
 
 ## Infos
 
-A postman collection with each entities is available on this repository as `NodeJsES6 Skeleton.portman_collection.json`.
+A postman collection is available in root `NodeJsES6 Skeleton.portman_collection.json`.
 
-You can also use the OpenAPI (swagger documentation) which is been reachable on http://localhost:4000/docs
+You can also use the OpenAPI (swagger documentation) reachable on http://localhost:4000/docs
