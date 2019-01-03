@@ -53,6 +53,9 @@ export default app => {
      */
     app.use(middleware.swaggerUi());
 
+    /**
+     * Configuration of differents used middlewares in app
+     */
     app.use(cors());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
