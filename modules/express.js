@@ -60,9 +60,15 @@ export default app => {
     app.use(express.static(__dirname));
     app.use(passport.initialize());
 
+    /**
+     * Declaring api entities here
+     */
     app.use('/api/auth', auth);
     app.use('/api/user', user);
 
+    /**
+     * For others
+     */
     app.get('/', (req, res) => {
       res.send('Invalid endpoint!');
     });
