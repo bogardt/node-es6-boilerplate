@@ -15,7 +15,7 @@
 					"name": "Get user",
 					"request": {
 						"url": {
-							"raw": "http://localhost:4000/api/user?email=toto@toto.fr",
+							"raw": "http://localhost:4000/api/user?email=user@test.org",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -28,7 +28,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "toto@toto.fr",
+									"value": "user@test.org",
 									"equals": true,
 									"description": ""
 								}
@@ -180,7 +180,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"1232abcd\",\n\t\"role\": \"user\"\n}"
+							"raw": "{\n\t\"email\": \"toto@toto.fr\",\n\t\"username\": \"toto\",\n\t\"password\": \"1232abcd\"\n}"
 						},
 						"description": ""
 					},
@@ -213,7 +213,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"user@test.org\",\n\t\"password\": \"1234\"\n}"
+							"raw": "{\n\t\"email\": \"user@test.org\",\n\t\"password\": \"qwerty1234\"\n}"
 						},
 						"description": ""
 					},
@@ -246,7 +246,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"admin@test.org\",\n\t\"password\": \"1234\"\n}"
+							"raw": "{\n\t\"email\": \"admin@test.org\",\n\t\"password\": \"qwerty1234\"\n}"
 						},
 						"description": ""
 					},
