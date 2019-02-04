@@ -1,7 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-import swaggerTools from 'swagger-tools';
 import cors from 'cors';
 import morgan from 'morgan';
 import config from '../config.dev';
@@ -9,7 +8,8 @@ import logger from './logger';
 import auth from '../routes/auth';
 import user from '../routes/user';
 
-const swaggerDoc = require('../api/swagger.json');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../api/swagger.json');
 
 const port = config.serverPort;
 
@@ -21,64 +21,31 @@ logger.stream = {
 
 export default app => {
   /**
-   * swaggerRouter configuration
+   * Configuration of middlewares
    */
-  const options = {
-    controllers: './controllers',
-    useStubs: process.env.NODE_ENV === 'dev' // Conditionally turn on stubs (mock mode)
-  };
+  app.use(cors());
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(morgan('dev', { stream: logger.stream }));
+  app.use(express.static(__dirname));
+  app.use(passport.initialize());
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   /**
-   *  Initialize the Swagger middleware
+   * Declaring api entities here
    */
-  swaggerTools.initializeMiddleware(swaggerDoc, middleware => {
-    /**
-     *  Interpret Swagger resources and attach metadata to request
-     *  must be first in swagger-tools middleware chain
-     */
-    app.use(middleware.swaggerMetadata());
+  app.use('/api/auth', auth);
+  app.use('/api/user', user);
 
-    /**
-     *  Validate Swagger requests
-     */
-    app.use(middleware.swaggerValidator());
+  /**
+   * For others
+   */
+  app.get('/', (req, res) => {
+    res.send('Invalid endpoint!');
+  });
 
-    /**
-     *  Route validated requests to appropriate controller
-     */
-    app.use(middleware.swaggerRouter(options));
-
-    /**
-     *  Serve the Swagger documents and Swagger UI
-     */
-    app.use(middleware.swaggerUi());
-
-    /**
-     * Configuration of differents used middlewares in app
-     */
-    app.use(cors());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(morgan('dev', { stream: logger.stream }));
-    app.use(express.static(__dirname));
-    app.use(passport.initialize());
-
-    /**
-     * Declaring api entities here
-     */
-    app.use('/api/auth', auth);
-    app.use('/api/user', user);
-
-    /**
-     * For others
-     */
-    app.get('/', (req, res) => {
-      res.send('Invalid endpoint!');
-    });
-
-    // Start the server
-    app.listen(port, () => {
-      logger.info('server started - ', port);
-    });
+  // Start the server
+  app.listen(port, () => {
+    logger.info('server started - ', port);
   });
 };

@@ -9,7 +9,7 @@
     "application/json"
   ],
   "host": "localhost:4000",
-  "basePath": "/api",
+  "basePath": "",
   "paths": {
     "/api/auth/register": {
       "post": {
