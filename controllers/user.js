@@ -198,11 +198,9 @@ controller.updateUser = async (req, res) => {
       return res.status(404).send({ message: 'User not found' });
     }
 
-    user.username = username !== undefined ? username : user.username;
-    user.role = role !== undefined ? role : user.role;
-    user.password = password !== undefined
-      ? bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-      : user.password;
+    user.username = username || user.username;
+    user.role = role || user.role;
+    user.password = password !== undefined ? bcrypt.hashSync(password, bcrypt.genSaltSync(10)) : user.password;
 
     await user.save();
 
