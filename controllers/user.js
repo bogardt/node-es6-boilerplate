@@ -28,6 +28,20 @@ controller.getUser = async (req, res) => {
       return res.status(403).send({ message: 'Forbidden' });
     }
 
+    const schema = Joi.object().keys({
+      email: Joi.string()
+        .email()
+        .lowercase()
+        .required()
+    });
+
+    const result = Joi.validate(req.query, schema, { abortEarly: false });
+    if (result.error !== null) {
+      return res
+        .status(400)
+        .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
+    }
+    
     const user = await User.findOne({ email: req.query.email });
     if (!user) {
       return res.status(404).send({ message: 'User doesn\'t exist' });
@@ -223,7 +237,21 @@ controller.deleteUser = async (req, res) => {
     if (userReq.role !== 'admin') {
       return res.status(403).send({ message: 'Forbidden' });
     }
+    
+    const schema = Joi.object().keys({
+      email: Joi.string()
+        .email()
+        .lowercase()
+        .required()
+    });
 
+    const result = Joi.validate(req.query, schema, { abortEarly: false });
+    if (result.error !== null) {
+      return res
+        .status(400)
+        .send({ message: 'Bad request', errorInfo: DeleteJoiUselessData(result.error) });
+    }
+    
     const { email } = req.query;
 
     const user = await User.findOne({ email });
