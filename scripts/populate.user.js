@@ -1,6 +1,6 @@
 import Mongoose, { connectToMongo, disconnectFromMongo } from '../modules/mongo';
 
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 require('../models/users');
 
@@ -8,13 +8,13 @@ const users = [
   {
     email: 'admin@test.org',
     username: 'admin_test',
-    password: bcrypt.hashSync('qwerty1234', bcrypt.genSaltSync(10)),
+    password: bcryptjs.hashSync('qwerty1234', bcryptjs.genSaltSync(10)),
     role: 'admin'
   },
   {
     email: 'user@test.org',
     username: 'user_test',
-    password: bcrypt.hashSync('qwerty1234', bcrypt.genSaltSync(10)),
+    password: bcryptjs.hashSync('qwerty1234', bcryptjs.genSaltSync(10)),
     role: 'user'
   }
 ];

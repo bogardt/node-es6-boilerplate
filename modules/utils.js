@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import passport from 'passport';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 const jwtStrategry = require('./passport');
 
@@ -21,7 +21,7 @@ export const PassportAuthUser = async (req, res) => new Promise(resolve => {
 });
 
 export const ComparePassword = async (userPassword, reqPassword) => new Promise((resolve, reject) => {
-  bcrypt.compare(reqPassword, userPassword, (err, success) => {
+  bcryptjs.compare(reqPassword, userPassword, (err, success) => {
     if (err) {
       return reject(err);
     }

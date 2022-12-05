@@ -5,7 +5,7 @@ import logger from '../modules/logger';
 import config from '../config.dev';
 import { PassportAuthUser, ComparePassword, DeleteJoiUselessData } from '../modules/utils';
 
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 const controller = {};
 
@@ -47,7 +47,7 @@ controller.register = async (req, res) => {
     const newUser = new User();
     newUser.email = req.body.email;
     newUser.username = req.body.username;
-    newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    newUser.password = bcryptjs.hashSync(req.body.password, bcryptjs.genSaltSync(10));
     newUser.role = 'user';
 
     await newUser.save();
@@ -134,7 +134,7 @@ controller.changePassword = async (req, res) => {
         return res.status(409).send({ message: 'You should use a different password' });
       }
 
-      user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+      user.password = bcryptjs.hashSync(req.body.password, bcryptjs.genSaltSync(10));
 
       await user.save();
     }

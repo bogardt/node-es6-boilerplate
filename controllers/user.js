@@ -3,7 +3,7 @@ import User from '../models/users';
 import logger from '../modules/logger';
 import { PassportAuthUser, DeleteJoiUselessData } from '../modules/utils';
 
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 const filterMongoUser = user => ({
   id: user.id,
@@ -100,7 +100,7 @@ controller.createUser = async (req, res) => {
     const newUser = new User();
     newUser.email = req.body.email;
     newUser.username = req.body.username;
-    newUser.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    newUser.password = bcryptjs.hashSync(req.body.password, bcryptjs.genSaltSync(10));
     newUser.role = req.body.role;
 
     await newUser.save();
@@ -155,7 +155,7 @@ controller.modifyUser = async (req, res) => {
 
     user.email = req.body.email;
     user.username = req.body.username;
-    user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    user.password = bcryptjs.hashSync(req.body.password, bcryptjs.genSaltSync(10));
     user.role = req.body.role;
 
     await user.save();
@@ -214,7 +214,7 @@ controller.updateUser = async (req, res) => {
 
     user.username = username || user.username;
     user.role = role || user.role;
-    user.password = password !== undefined ? bcrypt.hashSync(password, bcrypt.genSaltSync(10)) : user.password;
+    user.password = password !== undefined ? bcryptjs.hashSync(password, bcryptjs.genSaltSync(10)) : user.password;
 
     await user.save();
 
